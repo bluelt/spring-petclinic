@@ -15,6 +15,7 @@
  */
 package org.springframework.samples.petclinic.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Type;
 import org.joda.time.DateTime;
 import org.springframework.beans.support.MutableSortDefinition;
@@ -83,6 +84,7 @@ public class Pet extends NamedEntity {
         this.owner = owner;
     }
 
+    @JsonIgnore
     public Owner getOwner() {
         return this.owner;
     }
@@ -98,6 +100,7 @@ public class Pet extends NamedEntity {
         return this.visits;
     }
 
+    @JsonIgnore
     public List<Visit> getVisits() {
         List<Visit> sortedVisits = new ArrayList<Visit>(getVisitsInternal());
         PropertyComparator.sort(sortedVisits, new MutableSortDefinition("date", false, false));

@@ -16,7 +16,7 @@
 
     <h2>Veterinarians</h2>
 
-    <datatables:table id="vets" data="${vets.vetList}" cdn="true" row="vet" theme="bootstrap2" cssClass="table table-striped" paginate="false" info="false">
+    <datatables:table id="vets" data="${vets}" cdn="true" row="vet" theme="bootstrap2" cssClass="table table-striped" paginate="false" info="false">
         <datatables:column title="Name">
             <c:out value="${vet.firstName} ${vet.lastName}"></c:out>
         </datatables:column>
@@ -31,10 +31,13 @@
     <table class="table-buttons">
         <tr>
             <td>
-                <a href="<spring:url value="/vets.xml" htmlEscape="true" />">View as XML</a>
+                <a href="<spring:url value="/api/vets.xml" htmlEscape="true" />" target="_blank">View as XML / </a>
             </td>
             <td>
-                <a href="<spring:url value="/vets.atom" htmlEscape="true" />">Subscribe to Atom feed</a>
+                <a href="<spring:url value="/api/vets.json" htmlEscape="true" />" target="_blank">View as JSON / </a>
+            </td>
+            <td>
+                <a href="<spring:url value="/api/vets.atom" htmlEscape="true" />" target="_blank">Subscribe to Atom feed</a>
             </td>
         </tr>
     </table>
