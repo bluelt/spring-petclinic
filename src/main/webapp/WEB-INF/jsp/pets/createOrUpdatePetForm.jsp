@@ -23,7 +23,7 @@
             <c:set var="method" value="post"/>
         </c:when>
         <c:otherwise>
-            <c:set var="method" value="put"/>
+            <c:set var="method" value="post"/>
         </c:otherwise>
     </c:choose>
 
@@ -33,7 +33,7 @@
     </h2>
 
     <form:form modelAttribute="pet" method="${method}"
-               class="form-horizontal">
+               class="form-horizontal" enctype="multipart/form-data">
         <div class="control-group" id="owner">
             <label class="control-label">Owner </label>
 
@@ -43,6 +43,12 @@
         <petclinic:inputField label="Birth Date" name="birthDate"/>
         <div class="control-group">
             <petclinic:selectField name="type" label="Type " names="${types}" size="5"/>
+        </div>
+        <div class="control-group">
+            <label class="control-label">Profile Photo</label>
+            <div class="controls">
+                <input type="file" name="profilePhoto"/>
+            </div>
         </div>
         <div class="form-actions">
             <c:choose>

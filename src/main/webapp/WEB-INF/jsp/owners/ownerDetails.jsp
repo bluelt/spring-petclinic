@@ -61,6 +61,12 @@
                         <dt>Type</dt>
                         <dd><c:out value="${pet.type.name}"/></dd>
                     </dl>
+                    <c:if test="${empty pet.profilePhoto}">
+                        <img src="/resources/images/no_photo.png"/>
+                    </c:if>
+                    <c:if test="${not empty pet.profilePhoto}">
+                        <img src="data:image/jpg;base64,<c:out value="${pet.profilePhoto}"/>"/>
+                    </c:if>
                 </td>
                 <td valign="top">
                     <table class="table-condensed">
