@@ -1,5 +1,6 @@
 package org.springframework.samples.petclinic;
 
+import org.cloudfoundry.runtime.env.CloudEnvironment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.config.PropertiesFactoryBean;
@@ -29,6 +30,10 @@ public class EnvironmentInitializer implements ApplicationContextInitializer<Con
     public void initialize(ConfigurableApplicationContext context) {
         ConfigurableEnvironment springEnvironment = context.getEnvironment();
 
+        if(!isCloudFoundry()) {
+            addActiveProfiles(springEnvironment, Profiles.DEVELOPMENT);
+        }
+
         /*
             Default profile is "jpa" (see business-config.xml for more details).
             When using Spring JDBC, profile is 'jdbc'
@@ -42,6 +47,9 @@ public class EnvironmentInitializer implements ApplicationContextInitializer<Con
         try {
             List<Resource> resources = new ArrayList<>();
             resources.add(new ClassPathResource("spring/data-access.properties"));
+            if(isCloudFoundry()) {
+                resources.add(new ClassPathResource("spring/cloud-data-access.properties"));
+            }
 
             PropertiesFactoryBean bean = new PropertiesFactoryBean();
             bean.setLocations(resources.toArray(new Resource[resources.size()]));
@@ -66,6 +74,10 @@ public class EnvironmentInitializer implements ApplicationContextInitializer<Con
 
     void addPropertySource(ConfigurableEnvironment environment, PropertySource<?> source) {
         environment.getPropertySources().addLast(source);
+    }
+
+    private boolean isCloudFoundry() {
+        return new CloudEnvironment().isCloudFoundry();
     }
 
 }

@@ -16,6 +16,7 @@
 package org.springframework.samples.petclinic.service;
 
 import org.junit.runner.RunWith;
+import org.springframework.samples.petclinic.TestEnvironmentInitializer;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -26,10 +27,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  *
  * @author Thomas Risberg
  * @author Michael Isvy
+ * @author YongKwon Park
  */
-@ContextConfiguration(locations = {"classpath:spring/business-config.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
-@ActiveProfiles("jdbc")
+@ContextConfiguration(locations = {"classpath:spring/business-config.xml"}, initializers = TestEnvironmentInitializer.class)
+@ActiveProfiles({"development", "jdbc"})
 public class ClinicServiceJdbcTests extends AbstractClinicServiceTests {
 
 
