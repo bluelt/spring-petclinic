@@ -8,11 +8,8 @@
     <description>Spring PetClinic sample application</description>
 
     <context-param>
-        <param-name>spring.profiles.active</param-name>
-        <!-- Default profile is "jpa" (see business-config.xml for more details).
-        When using Spring JDBC, param-value is 'jdbc'
-         When using Spring Data JPA, param-valus is 'spring-data-jpa'-->
-        <param-value>jpa</param-value>
+        <param-name>contextInitializerClasses</param-name>
+        <param-value>org.springframework.samples.petclinic.EnvironmentInitializer</param-value>
     </context-param>
 
     <!--
