@@ -15,8 +15,7 @@
     <!-- import the dataSource definition -->
     <import resource="datasource-config.xml"/>
 
-    <context:component-scan
-            base-package="org.springframework.samples.petclinic.service"/>
+    <context:component-scan base-package="org.springframework.samples.petclinic.service"/>
 
     <!-- Configurer that replaces ${...} placeholders with values from a properties file -->
     <!-- (in this case, JDBC-related settings for the JPA EntityManager definition below) -->
@@ -26,13 +25,13 @@
     <tx:annotation-driven />
  
 	
-	<!-- ==================		 3 Profiles to choose from 			=================== 
-									- default (uses JPA)
-									- jdbc (uses Spring" JdbcTemplate)
-									- spring-data-jpa	
-		  =============================================================================-->
+	<!-- 3 Profiles to choose from
+            - jpa
+            - spring-data-jpa
+            - jdbc (uses Spring" JdbcTemplate)
+    -->
 	
-    <beans profile="default,spring-data-jpa">
+    <beans profile="jpa,spring-data-jpa">
         <!-- JPA EntityManagerFactory -->
         <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
               p:dataSource-ref="dataSource">
@@ -54,13 +53,26 @@
         <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager"
               p:entityManagerFactory-ref="entityManagerFactory"/>
 
-
         <!--
             Post-processor to perform exception translation on @Repository classes (from native
             exceptions such as JPA PersistenceExceptions to Spring's DataAccessException hierarchy).
         -->
         <bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>
 
+    </beans>
+
+    <beans profile="jpa">
+        <!--
+            Loads JPA beans
+            Will automatically be transactional due to @Transactional.
+            EntityManager will be auto-injected due to @PersistenceContext.
+            PersistenceExceptions will be auto-translated due to @Repository.
+        -->
+        <context:component-scan base-package="org.springframework.samples.petclinic.repository.jpa"/>
+    </beans>
+
+    <beans profile="spring-data-jpa">
+        <jpa:repositories base-package="org.springframework.samples.petclinic.repository.springdatajpa"/>
     </beans>
 
     <beans profile="jdbc">
@@ -80,17 +92,4 @@
         <context:component-scan base-package="org.springframework.samples.petclinic.repository.jdbc"/>
     </beans>
 
-    <beans profile="default">
-        <!--
-            Loads JPA beans
-            Will automatically be transactional due to @Transactional.
-            EntityManager will be auto-injected due to @PersistenceContext.
-            PersistenceExceptions will be auto-translated due to @Repository.
-        -->
-        <context:component-scan base-package="org.springframework.samples.petclinic.repository.jpa"/>
-    </beans>
-
-    <beans profile="spring-data-jpa">
-        <jpa:repositories base-package="org.springframework.samples.petclinic.repository.springdatajpa"/>
-    </beans>
 </beans>
